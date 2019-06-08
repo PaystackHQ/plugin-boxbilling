@@ -55,6 +55,6 @@ For general support or questions about your Paystack account, you can reach out 
 ## Community
 If you are a developer, please join our Developer Community on [Slack](https://slack.paystack.com).
 
-## Contributing to Payment Forms for Paystack
+## Contributing to Paystack Plugin for Boxbilling
 
 If you have a patch or have stumbled upon an issue with the Paystack Gateway for Paid Membership Pro plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/PaystackHQ/wordpress-payment-forms-for-paystack/blob/master/CONTRIBUTING.md) for more information how you can do this.
