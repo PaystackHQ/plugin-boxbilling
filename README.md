@@ -7,6 +7,13 @@ Before you can start taking payments through Paystack, you will first need to si
 [https://dashboard.paystack.co/#/signup][link-signup]. To receive live payments, you should request a Go-live after
 you are done with configuration and have successfully made a test payment.
 
+## Requirements
+
+- PHP with the 21 Oct 2026 security fixes for critical remote code execution flaws (GHSA-w8hw-w9fx-j79w, GHSA-6wmf-4rv5-p3rp; [php.net advisory](https://www.php.net/releases/8_2_35.php)): **8.2.35, 8.3.36, 8.4.27, 8.5.12 or later**. PHP 8.1 and older no longer receive security fixes.
+- The adapter itself is checked to load and run without errors, warnings or deprecations on PHP 7.4, 8.3 and 8.5 against stubbed BoxBilling classes (see the pull request for how it was tested).
+- BoxBilling: the last BoxBilling release (4.22.1.5, April 2022) documents PHP 8.0 as its recommended version and says PHP 8.1 is untested ([BoxBilling README](https://github.com/boxbilling/boxbilling#requirements)). The repository is archived and BoxBilling is no longer maintained, so **BoxBilling has not been shown to run a patched PHP 8.2+ release; merchants on BoxBilling should migrate to a maintained platform**.
+- [FOSSBilling](https://fossbilling.org/), the maintained fork of BoxBilling, currently requires PHP 8.3 or later ([composer.json](https://github.com/FOSSBilling/FOSSBilling/blob/main/composer.json)), but its payment adapter API differs from the one this plugin implements, and this plugin has **not** been ported to or tested on FOSSBilling.
+
 ## Install
 
 - Add the `Paystack.php` file as `/bb-library/Payment/Adapter/Paystack.php` .
