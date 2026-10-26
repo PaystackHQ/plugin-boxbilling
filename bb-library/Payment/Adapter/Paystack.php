@@ -107,7 +107,7 @@ class Payment_Adapter_Paystack implements \Box\InjectionAwareInterface {
 
         $input = file_get_contents('php://input');
         $secret_key = $this->config['secret_key'];
-        if ($this->config['test_mode']) {
+        if (!empty($this->config['test_mode'])) {
             $secret_key = $this->get_test_secret_key();
         }
         if (!$_SERVER['HTTP_X_PAYSTACK_SIGNATURE'] || ($_SERVER['HTTP_X_PAYSTACK_SIGNATURE'] !== hash_hmac('sha512', $input, $secret_key))) {
@@ -158,7 +158,7 @@ class Payment_Adapter_Paystack implements \Box\InjectionAwareInterface {
         $invoiceAmountInCents = $this->getAmountInCents($invoice);
 
         $secret_key = $this->config['secret_key'];
-        if ($this->config['test_mode']) {
+        if (!empty($this->config['test_mode'])) {
             $secret_key = $this->get_test_secret_key();
         }
         $title = $this->getInvoiceTitle($invoice);
@@ -211,7 +211,7 @@ class Payment_Adapter_Paystack implements \Box\InjectionAwareInterface {
      */
     protected function _generateForm(Model_Invoice $invoice) {
         $pubKey = $this->config['public_key'];
-        if ($this->config['test_mode']) {
+        if (!empty($this->config['test_mode'])) {
             $pubKey = $this->get_test_public_key();
         }
 
@@ -421,7 +421,7 @@ if (!class_exists('Paystack')) {
                 // to allow args to be specified in the payload, filter them out and put them in sentargs
                 $sentargs = (!$sentargs) ? [] : $sentargs; // Make sure $sentargs is not null
                 $args = $interface[PaystackContractsRouteInterface::ARGS_KEY];
-                while (list($key, $value) = each($payload)) {
+                foreach ($payload as $key => $value) {
                     // check that a value was specified
                     // with a key that was expected as an arg
                     if (in_array($key, $args)) {
@@ -434,8 +434,15 @@ if (!class_exists('Paystack')) {
 
         private function putArgsIntoEndpoint(&$endpoint, $sentargs) {
             // substitute sentargs in endpoint
-            while (list($key, $value) = each($sentargs)) {
+            foreach ($sentargs as $key => $value) {
                 $endpoint = str_replace('{' . $key . '}', $value, $endpoint);
+            }
+        }
+
+        private function closeCurl($ch) {
+            // curl_close() has had no effect since PHP 8.0 and is deprecated in PHP 8.5
+            if (PHP_VERSION_ID < 80000) {
+                curl_close($ch);
             }
         }
 
@@ -472,7 +479,7 @@ if (!class_exists('Paystack')) {
             }
             //flatten the headers
             $flattened_headers = [];
-            while (list($key, $value) = each($headers)) {
+            foreach ($headers as $key => $value) {
                 $flattened_headers[] = $key . ": " . $value;
             }
             curl_setopt($ch, CURLOPT_HTTPHEADER, $flattened_headers);
@@ -493,18 +500,23 @@ if (!class_exists('Paystack')) {
             if (curl_errno($ch)) {   // should be 0
                 // curl ended with an error
                 $cerr = curl_error($ch);
-                curl_close($ch);
+                $this->closeCurl($ch);
                 $resp->error = "Curl failed with response: '" . $cerr . "'.";
                 return $resp;
             }
             $resp = json_decode($response);
+            if (!is_object($resp)) {
+                // empty or non-JSON reply
+                $resp = new stdClass();
+            }
+            $resp->error = false;
 
             // Then, after your curl_exec call:
             //close connection
-            curl_close($ch);
+            $this->closeCurl($ch);
 
-            if (!$resp->status) {
-                $resp->error = "Paystack Request failed with response: '" . $resp->message . "'.";
+            if (empty($resp->status)) {
+                $resp->error = "Paystack Request failed with response: '" . (isset($resp->message) ? $resp->message : '') . "'.";
             }
 
             return $resp;
@@ -543,7 +555,7 @@ if (!class_exists('Paystack')) {
                     // TODO: validate params and sentargs against definitions
                     return $this->callViaCurl($interface, $params, $sentargs);
                 };
-                $this->methods[$mtd] = Closure::bind($mtdFunc, $this, get_class());
+                $this->methods[$mtd] = Closure::bind($mtdFunc, $this, self::class);
             }
         }
 
