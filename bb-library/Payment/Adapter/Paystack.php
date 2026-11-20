@@ -110,7 +110,9 @@ class Payment_Adapter_Paystack implements \Box\InjectionAwareInterface {
         if (!empty($this->config['test_mode'])) {
             $secret_key = $this->get_test_secret_key();
         }
-        if (!$_SERVER['HTTP_X_PAYSTACK_SIGNATURE'] || ($_SERVER['HTTP_X_PAYSTACK_SIGNATURE'] !== hash_hmac('sha512', $input, $secret_key))) {
+        $signature = $_SERVER['HTTP_X_PAYSTACK_SIGNATURE'];
+        // constant-time comparison so the signature can't be guessed byte by byte
+        if (!is_string($signature) || $signature === '' || !hash_equals(hash_hmac('sha512', $input, $secret_key), $signature)) {
             // silently forget this ever happened
             return null;
         }

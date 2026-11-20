@@ -9,13 +9,12 @@ __Please Note:__
 GitHub is for _bug reports and contributions only_ - if you have a support question or a request for a customization this is not the right place to post it.  Please reach out by 
 
 - sending a message from [our website](https://paystack.com/contact).
-- posting a question on the plugin support forum.
 
 ## Contributing to Plugin
 
 ### Reporting Issues
 
-Reporting issues is a great way to became a contributor as it doesn't require technical skills. In fact you don't even need to know a programming language or to be able to check the code itself, you just need to make sure that everything works as expected and [submit an issue report](https://github.com/PaystackHQ/wordpress-payment-forms-for-paystack/issues/new) if you spot a bug. Sound like something you're up for? Go for it!
+Reporting issues is a great way to became a contributor as it doesn't require technical skills. In fact you don't even need to know a programming language or to be able to check the code itself, you just need to make sure that everything works as expected and [submit an issue report](https://github.com/PaystackHQ/plugin-boxbilling/issues/new) if you spot a bug. Sound like something you're up for? Go for it!
 
 #### How To Submit An Issue Report
 
