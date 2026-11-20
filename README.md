@@ -9,7 +9,7 @@ you are done with configuration and have successfully made a test payment.
 
 ## Requirements
 
-- PHP with the 21 Oct 2026 security fixes for critical remote code execution flaws (GHSA-w8hw-w9fx-j79w, GHSA-6wmf-4rv5-p3rp; [php.net advisory](https://www.php.net/releases/8_2_35.php)): **8.2.35, 8.3.36, 8.4.27, 8.5.12 or later**. PHP 8.1 and older no longer receive security fixes.
+- PHP with the 19 Nov 2026 security fixes, which include remote code execution flaws in the Date and Session extensions (GHSA-gr4f-wgx5-jpfv, GHSA-fm2m-fjf5-v3cp, GHSA-658j-r8rw-q6mx) and, on PHP 8.5, in Core (GHSA-8mjj-2r7p-4hg2) ([PHP changelog](https://www.php.net/ChangeLog-8.php#8.5.13)): **8.2.36, 8.3.37, 8.4.28, 8.5.13 or later** (PHP 8.6.0 also includes them). PHP 8.2 reaches end of life on 31 December 2026, and PHP 8.1 and older no longer receive security fixes. These flaws are in the PHP runtime, not in this plugin, so upgrading PHP on your server is what fixes them.
 - The adapter itself is checked to load and run without errors, warnings or deprecations on PHP 7.4, 8.3 and 8.5 against stubbed BoxBilling classes (see the pull request for how it was tested).
 - BoxBilling: the last BoxBilling release (4.22.1.5, April 2022) documents PHP 8.0 as its recommended version and says PHP 8.1 is untested ([BoxBilling README](https://github.com/boxbilling/boxbilling#requirements)). The repository is archived and BoxBilling is no longer maintained, so **BoxBilling has not been shown to run a patched PHP 8.2+ release; merchants on BoxBilling should migrate to a maintained platform**.
 - [FOSSBilling](https://fossbilling.org/), the maintained fork of BoxBilling, currently requires PHP 8.3 or later ([composer.json](https://github.com/FOSSBilling/FOSSBilling/blob/main/composer.json)), but its payment adapter API differs from the one this plugin implements, and this plugin has **not** been ported to or tested on FOSSBilling.
@@ -53,9 +53,7 @@ Apache-2.0 License
 [link-author2]: https://github.com/ibrahimlawal
 
 ## Support
-For bug reports and feature requests directly related to this plugin, please use the [issue tracker](https://github.com/PaystackHQ/paystack-payment-forms-for-wordpress/issues). 
-
-For questions related to using the plugin, please post an inquiry to the plugin [support forum](https://wordpress.org/support/plugin/payment-forms-for-paystack).
+For bug reports and feature requests directly related to this plugin, please use the [issue tracker](https://github.com/PaystackHQ/plugin-boxbilling/issues). 
 
 For general support or questions about your Paystack account, you can reach out by sending a message from [our website](https://paystack.com/contact).
 
@@ -64,4 +62,4 @@ If you are a developer, please join our Developer Community on [Slack](https://s
 
 ## Contributing to Paystack Plugin for Boxbilling
 
-If you have a patch or have stumbled upon an issue with the Paystack Gateway for Paid Membership Pro plugin, you can contribute this back to the code. Please read our [contributor guidelines](https://github.com/PaystackHQ/wordpress-payment-forms-for-paystack/blob/master/CONTRIBUTING.md) for more information how you can do this.
+If you have a patch or have stumbled upon an issue with this plugin, you can contribute this back to the code. Please read our [contributor guidelines](CONTRIBUTING.md) for more information how you can do this.
